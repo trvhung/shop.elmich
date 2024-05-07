@@ -1,0 +1,39 @@
+{% include 'breadcrumb' %}
+<div class="com_info  bg-white">
+	<div class="micro-site container mb-3">
+		<div class="rounded p-2 p-md-3 col-main page-title">
+			<h1 class="font-weight-bold d-none page_name">{{page.title}}</h1>
+			{%include 'aside-cate-landing'%}
+			{%include 'landing-banner'%}
+			{%include 'landing-cate'%}
+			{%include 'landing_product_flash'%}
+			{%if settings.ena_tab_title%}
+			{%include 'landing-product-tab1'%}
+			{%endif%}
+			{%if settings.ena_tab2_title%}
+			{%include 'landing-product-tab2'%}
+			{%endif%}
+			{%if settings.ena_tab3_title%}
+			{%include 'landing-product-tab3'%}
+			{%endif%}
+			{%include 'landing_poli'%}
+			{%include 'landing-content-blog'%}
+			
+		</div>
+	</div>
+</div>
+<div class="fixed-toc">
+	<div class="container">
+		<div class="list d-flex pt-2 pb-2 align-items-center">
+			<div class="item active text-center pb-1">
+				<a class="font-weight-bold p-2" href="#{{settings.banner_tab_title | handleize}}" title="{{settings.banner_tab_title}}">{{settings.banner_tab_title}}</a>
+			</div>
+			<div class="item text-center pb-1">
+				<a class="font-weight-bold p-2 " href="#{{settings.banner_tab2_title | handleize}}" title="{{settings.banner_tab2_title}}">{{settings.banner_tab2_title}}</a>
+			</div>
+			<div class="item text-center pb-1">
+				<a class="font-weight-bold p-2 " href="#{{settings.banner_tab3_title | handleize}}" title="{{settings.banner_tab3_title}}">{{settings.banner_tab3_title}}</a>
+			</div>
+		</div>
+	</div>
+</div>
