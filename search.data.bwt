@@ -1,0 +1,35 @@
+{%- layout none -%}
+<div class="category-products position-relative mt-4 mb-4">
+	{%- paginate search.results by settings.collection_results_per_page -%}	
+	{%- if search.results.size > 0 -%}
+	<div class="row slider-items">
+		{%- for product in search.results -%}
+		{% assign is_color = false %}
+
+		{% for option in product.options %}
+		{% assign downcased_option = option | downcase %}
+		{% if downcased_option contains 'color' or downcased_option contains 'colour'  or downcased_option contains 'màu' %}
+		{% assign is_color = true %}
+		{% endif %}
+		{% endfor %}
+		{%if is_color%}
+		{% for variant in product.variants %}
+		<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 product-grid-item-lm mb-3 ">
+			{%- include 'product-grid-item-col' with option -%}         
+		</div>
+		{% endfor %}
+		{%else%}
+		<div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 product-grid-item-lm mb-3 ">
+			{%- include 'product-grid-item-no' -%}          
+		</div>
+		{%endif%}
+		{%- endfor -%}
+	</div>
+	{%- else -%}
+	<p class="text-center alert alert-warning">{{settings.emptyCollection}}</p>
+	{%- endif %}
+	{%- if paginate.pages > 1 -%}
+	{%- include 'collection-paginate-pages' -%}
+	{%- endif -%}
+	{%- endpaginate -%}
+</div>
