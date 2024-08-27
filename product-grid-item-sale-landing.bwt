@@ -1,0 +1,97 @@
+{% assign hasFrame = false %}
+{%for promo_index in (1..5)%}
+{% capture promo_tag -%}tag_{{promo_index}}{% endcapture -%}
+{% assign tagPrefix = settings[promo_tag]  %}
+{% for tag in product.tags -%}
+{% if tag contains tagPrefix -%}
+{% assign hasFrame = true %}
+{% endif-%}
+{% endfor -%}
+{% endfor %}
+
+{% assign check_tag =  false %}
+{% for tag in product.tags %}
+{% if tag contains 'giamthem_' %}
+{% assign check_tag =  true %}
+{% assign giamthem =  tag | remove:'giamthem_' %}
+{% endif %}
+{% endfor%}
+
+{% assign tag_check =  false %}
+{% for tag in product.tags %}
+{% if tag contains 'taglabel_' %}
+{% assign tag_check =  true %}
+{% assign labeltag =  tag | remove:'taglabel_' %}
+{% endif %}
+{% endfor%}
+<div class="item_product_main rounded-10 bg-white h-100 box_shadow item_product_page" data-url="{{product.url}}"  data-id="{{product.id}}{{loppsection}}">
+	{%-include 'setup_price_sn'-%}
+	<form action="/cart/add" method="post" class="variants product-action" data-cart-form data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+		<div class="product-item position-relative ">
+			{%unless hasFrame%}
+			{%-if contact == false-%}
+			{%-if on_sale-%}
+			<div class="sale-label sale-top-right position-absolute font-weight-bold">Giảm {{discount}}</div>
+			{%-endif-%}
+			{%-endif-%}
+			{%endunless%}
+			<a href="{{ product.url}}" class="thumb d-block modal-open position-relative" title="{{ product.name }}">
+				<div class="product-image">
+
+					<img src="{{'placeholder_1x1.png' | asset_url}}" data-src="{{ product.featured_image.src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute lazy" alt="{{ product.name }}">
+				</div>
+
+				{% if product.images.size >= 2  %}
+				<div class="product-image second-image">
+
+					<img src="{{'placeholder_1x1.png' | asset_url}}" data-src="{{ product.images[1].src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute lazy" alt="{{ product.name }}">
+				</div>
+				{% else %}
+				<div class="product-image second-image">
+
+					<img src="{{'placeholder_1x1.png' | asset_url}}" data-src="{{ product.featured_image.src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute lazy" alt="{{ product.name }}">
+				</div>
+				{% endif %}
+				{%-include 'product_frame'-%}
+				{%-include 'tag_product'-%}
+			</a>
+			<div class="item-info p-2 mt-1 position-relative">
+				<h3 class="item-title">
+					<a class="line_{{settings.line_tit_grid_pr}} landing-item-title" href="{{ product.url }}" title="{{ product.name }}">
+						{{ product.name | replace: '<', '&lt;'}} 
+					</a>
+				</h3>
+				{%include 'product-grid-item_buynow'%}
+				<div class="item-price mt-3" data-id="{{ product.variants.first.id }}">
+					{%-if contact == false-%}
+					{%-if on_sale-%}
+					<span class="special-price price font-weight-bold">{{ dq-price | money }}</span>
+					<del class="old-price"> {{ dq-compare-price | money }}</del>
+					{%-else-%}
+					<span class="regular-price price font-weight-bold">{{ dq-price | money }}</span>
+					{%-endif-%}
+					{%-else-%}
+					<span class="regular-price font-weight-bold">{{settings.noPrice}}</span> 
+					{%-endif-%}
+				</div>
+				{%if check_tag%}
+				<div class="tag_sale">
+					{{settings.label_tag}} <span>{{giamthem}}đ</span>
+				</div>
+				{%endif%}
+				{% if tag_check %}
+				<a href="{{product.url}}" class="taglabel">
+					{{labeltag}}
+				</a>
+				{% endif %}
+			</div>
+
+		</div>
+	</form>
+	<div class="star_compare pr-2 pl-2 pb-2">
+		{%-if settings.product_review-%}
+		<div class="sapo-product-reviews-badge" data-id="{{ product.id }}"></div>
+		{%-endif-%}
+
+	</div>
+</div>
