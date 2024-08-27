@@ -1,0 +1,94 @@
+{% assign hasFrame = false %}
+{%for promo_index in (1..5)%}
+{% capture promo_tag -%}tag_{{promo_index}}{% endcapture -%}
+{% assign tagPrefix = settings[promo_tag]  %}
+{% for tag in product.tags -%}
+{% if tag contains tagPrefix -%}
+{% assign hasFrame = true %}
+{% endif-%}
+{% endfor -%}
+{% endfor %}
+<div class="item_product_main rounded-10 bg-white h-100 box_shadow" data-url="{{product.url}}"  data-id="{{product.id}}{{loppsection}}">
+	{%-include 'setup_price_sn'-%}
+	<form action="/cart/add" method="post" class="variants product-action" data-cart-form data-id="product-actions-{{ product.id }}" enctype="multipart/form-data">
+		<div class="product-item position-relative ">
+			{%unless hasFrame%}
+			{%-if contact == false-%}
+			{%-if on_sale-%}
+			<div class="sale-label sale-top-right position-absolute font-weight-bold">Giảm {{discount}}</div>
+			{%-endif-%}
+			{%-endif-%}
+			{%endunless%}
+			<a href="{{ product.url}}" class="thumb d-block modal-open position-relative" title="{{ product.name }}">
+				<div class="product-image">
+
+					<img src="{{ product.featured_image.src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute" alt="{{ product.name }}">
+				</div>
+
+				{% if product.images.size >= 2  %}
+				<div class="product-image second-image">
+
+					<img src="{{ product.images[1].src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute" alt="{{ product.name }}">
+				</div>
+				{% else %}
+				<div class="product-image second-image">
+
+					<img src="{{ product.featured_image.src | img_url: 'large'}}" decoding="async" class="d-block img img-cover position-absolute" alt="{{ product.name }}">
+				</div>
+				{% endif %}
+				{%-include 'product_frame'-%}
+				{%-include 'tag_product'-%}
+			</a>
+			<div class="item-info p-2 mt-1 position-relative">
+				<h3 class="item-title">
+					<a class="line_{{settings.line_tit_grid_pr}}" href="{{ product.url }}" title="{{ product.name }}">
+						{{ product.name | replace: '<', '&lt;'}} 
+					</a>
+				</h3>
+				{%-if settings.product_review-%}
+				<div class="sapo-product-reviews-badge" data-id="{{ product.id }}"></div>
+				{%-endif-%}
+				<div class="item-price" data-id="{{ product.variants.first.id }}">
+					{%-if contact == false-%}
+					{%-if on_sale-%}
+					<span class="special-price font-weight-bold">{{ dq-price | money }}</span>
+					<del class="old-price"> {{ dq-compare-price | money }}</del>
+					{%-else-%}
+					<span class="regular-price font-weight-bold">{{ dq-price | money }}</span>
+					{%-endif-%}
+					{%-else-%}
+					<span class="regular-price font-weight-bold">{{settings.noPrice}}</span> 
+					{%-endif-%}
+				</div>
+				{%include 'product-grid-item_buynow'%}
+				{%-if settings.enable_compare-%}
+				<label class="compare-label position-relative d-flex align-items-center m-0">
+					<input type="checkbox" class="compare-checkbox d-none" value="{{ product.url }}" data-type="{{product.type}}"> 
+					<span class="compare-checkbox mr-1 rounded-circle"></span>
+					{{settings.compare_tit}}
+				</label>
+				{%-endif-%}
+				{%- if product.variants.size >= 1 -%}
+				<div class="option-swath">
+					{%- for option in product.options -%}
+					{%- include 'swatch_for_grid' with option -%}
+					{%- endfor -%}
+				</div>
+				{%-endif-%}
+				{%- if product.variants | size >= 1 -%}
+				<script>
+					var varisize = '1';
+				</script>
+				<select name="variantId" class="d-none" id="product-grid-selectors-{{product.id}}{{loppsection}}">
+					{%- for variant in product.variants -%}
+					<option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title | escape}} - {{ variant.price | money }}</option>
+					{%- endfor -%}
+				</select>
+				{%- else -%}
+				<script>var varisize = '0';</script>
+				<input type="hidden" id="one_variant-{{product.variants[0].id}}{{loppsection}}" name="variantId" value="{{ product.variants[0].id }}" />
+				{%- endif -%}
+			</div>
+		</div>
+	</form>
+</div>
