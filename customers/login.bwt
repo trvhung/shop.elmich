@@ -1,0 +1,170 @@
+{% include 'breadcrumb' %}
+<section class="section">
+	<div class="container margin-bottom-20">
+		<div class="wrap_background_aside margin-bottom-40 page_login">
+			<h1 class="title_page">Đăng nhập tài khoản</h1>
+			<div class="row">
+				<div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+					<div class="page-login" id="LoginForm">
+						{% form 'customer_id_login' %}
+						<h2>Đăng nhập</h2>
+						<div class="form-error text-danger {% if form.errors %}has-error{% endif %}">
+							{% for field in form.errors %}
+							{{ form.errors.messages[field] }}<br/>
+							{% endfor %}
+						</div>
+						<div class="form-signup">
+							<input type="hidden" value="validate_phone" id="StepLogin" />
+							<input type="hidden" value="password" id="TypeLogin" />
+							{% comment %}
+							<span class="label" data-label="Otp" style="display: none; margin-bottom: 8px;">Mã xác minh đã được gửi đến số điện thoại của bạn: </span>
+							{% endcomment %}
+							<div class="form-group" id="EmailPhoneFormGroup">
+								<label>Số điện thoại/Email<span>*</span></label>
+								<input type="text" class="form-control form-control-lg" value="" name="Email" id="Email" placeholder="Nhập số điện thoại hoặc email" />
+								<span class="message-error" data-error-for="Email"></span>
+							</div>
+							<div class="form-group" id="OtpFormGroup" style="display: none">
+								<label>Mã OTP<span>*</span></label>
+								<input type="text" class="form-control form-control-lg" value="" name="Otp" id="Otp" maxlength="6" placeholder="Nhập mã OTP" />
+								<span class="message-error" data-error-for="Otp"></span>
+							</div>
+							<div class="form-group" id="PasswordFormGroup">
+								<label>Mật khẩu<span>*</span></label>
+								<input type="password" class="form-control form-control-lg" value="" name="Password" id="Password" placeholder="Nhập mật khẩu" />
+								<span class="message-error" data-error-for="Password"></span>
+								<a href="javascript:;" class="btn-recovery" id="forget_password-btn">Quên mật khẩu?</a>
+							</div>
+							<div class="form-group actions">
+								<button type="submit" class="btn btn-style btn_50 btn_register" disabled>Đăng nhập</button>
+							</div>
+							<div class="extra-actions" style="margin-bottom: 15px;">
+								<div class="extra-actions__left">
+									<a href="javascript:;" class="btn-return" style="display: none;" id="return_login-btn">Quay lại</a>
+								</div>
+								<div class="extra-actions__right">
+									<a href="javascript:;" class="btn-change-type" id="login_sms-btn">Đăng nhập với SMS</a>
+								</div>
+							</div>
+							<div class="extra-actions">
+								<div class="extra-actions__center">
+									Bạn chưa có tài khoản <a href="/account/register" class="btn-return" title="Đăng ký tại đây">Đăng ký tại đây</a>
+								</div>
+							</div>
+						</div>
+						{% endform %}
+						<div id="SocialLogin">
+							<div class="social-login--facebooks">
+								<p class="text-or">
+									<span>Hoặc đăng nhập bằng</span>
+								</p>
+								{{ social_login.script }}
+								{{ social_login.facebook_button }}
+								{{ social_login.google_button }}
+							</div>
+						</div>
+					</div>
+					<div class="page-login" id="RecoveryForm" style="display: none;">
+						{% form 'recover_customer_id_password' %}
+						<h2>Đặt lại mật khẩu</h2>
+						<div class="form-error text-danger {% if form.errors %}has-error{% endif %}">
+							{% for field in form.errors %}
+							{{ form.errors.messages[field] }}<br/>
+							{% endfor %}
+						</div>
+						<div class="form-signup">
+							<input type="hidden" value="validate_phone" id="StepRecovery" />
+							<input type="hidden" value="email" id="TypeRecovery" />
+							<div class="form-group" id="EmailPhoneRecoveryFormGroup">
+								<p class="noti">
+									Vui lòng nhập số điện thoại của bạn để đặt lại mật khẩu
+								</p>
+								<label>Số điện thoại<span>*</span></label>
+								<input type="text" class="form-control form-control-lg" value="" name="EmailRecovery" id="EmailRecovery" placeholder="Nhập số điện thoại" />
+								<span class="message-error" data-error-for="EmailRecovery"></span>
+							</div>
+							<div class="form-group" id="OtpRecoveryFormGroup" style="display: none">
+								<label>Mã OTP<span>*</span></label>
+								<input type="text" class="form-control form-control-lg" value="" name="OtpRecovery" id="OtpRecovery" maxlength="6" placeholder="Nhập mã OTP" />
+								<span class="message-error" data-error-for="OtpRecovery"></span>
+							</div>
+							<div id="AdditionalInfo" style="display: none;">
+								<div class="form-group">
+									<label>Họ và tên</label>
+									<input type="text" class="form-control form-control-lg" value="" name="FullName" id="FullName" placeholder="Nhập họ và tên" />
+									<span class="message-error" data-error-for="FullName"></span>
+								</div>
+								<div class="form-group">
+									<label>Email</label>
+									<input type="text" class="form-control form-control-lg" value="" name="EmailRegister" id="EmailRegister" placeholder="Nhập Email" />
+									<span class="message-error" data-error-for="EmailRegister"></span>
+								</div>
+							</div>
+							<div id="ChangePassword" style="display: none;">
+								<div class="form-group">
+									<p class="noti">
+										Nhập mật khẩu mới cho <strong class="phonevalue"></strong>
+									</p>
+									<label>Mật khẩu mới<span>*</span></label>
+									<input type="password" class="form-control form-control-lg" value="" name="PasswordRecovery" id="PasswordRecovery" placeholder="Nhập mật khẩu mới" />
+									<span class="message-error" data-error-for="PasswordRecovery"></span>
+								</div>
+								<div class="form-group">
+									<label>Nhập lại mật khẩu<span>*</span></label>
+									<input type="password" class="form-control form-control-lg" value="" name="ConfirmPasswordRecovery" id="ConfirmPasswordRecovery" placeholder="Nhập lại mật khẩu" />
+									<span class="message-error" data-error-for="ConfirmPasswordRecovery"></span>
+								</div>
+							</div>
+							<div class="form-group actions">
+								<button type="submit" class="btn btn-style btn_50 btn_register" disabled>Tiếp tục</button>
+							</div>
+							<div class="extra-actions">
+								<div class="extra-actions__left">
+									<a href="javascript:;" class="btn-return" id="return_recovery-btn">Quay lại</a>
+								</div>
+								<div class="extra-actions__right">
+								</div>
+							</div>
+						</div>
+						{% endform %}
+					</div>
+					<div class="page-login" id="RecoverySuccess" style="display: none">
+						<h2 class="text-center">Đặt lại mật khẩu</h2>
+						<div class="recovery-success form-signup">
+							<svg width="54" height="54" viewBox="0 0 54 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+								<g clip-path="url(#clip0)">
+									<path d="M47.8125 49.5H43.74C42.8085 49.5 42.0525 48.744 42.0525 47.8125C42.0525 46.881 42.8085 46.125 43.74 46.125H47.8125C49.3628 46.125 50.625 44.8628 50.625 43.3125V6.1875C50.625 4.63725 49.3628 3.375 47.8125 3.375H6.1875C4.63725 3.375 3.375 4.63725 3.375 6.1875V43.3125C3.375 44.8628 4.63725 46.125 6.1875 46.125H10.26C11.1915 46.125 11.9475 46.881 11.9475 47.8125C11.9475 48.744 11.1915 49.5 10.26 49.5H6.1875C2.77425 49.5 0 46.7257 0 43.3125V6.1875C0 2.77425 2.77425 0 6.1875 0H47.8125C51.2257 0 54 2.77425 54 6.1875V43.3125C54 46.7257 51.2257 49.5 47.8125 49.5Z" fill="#A3A8AF"/>
+									<path d="M52.3125 11.25H1.6875C0.756 11.25 0 10.494 0 9.5625C0 8.631 0.756 7.875 1.6875 7.875H52.3125C53.244 7.875 54 8.631 54 9.5625C54 10.494 53.244 11.25 52.3125 11.25Z" fill="#A3A8AF"/>
+									<path d="M27 54.0001C26.775 54.0001 26.5522 53.9551 26.3407 53.8651C25.8165 53.6424 13.5 48.2806 13.5 37.2466V28.2061C13.5 27.4839 13.959 26.8426 14.6452 26.6086L26.4577 22.5901C26.8087 22.4686 27.1913 22.4686 27.5423 22.5901L39.3547 26.6086C40.041 26.8404 40.5 27.4816 40.5 28.2061V37.2466C40.5 48.2806 28.1835 53.6446 27.6593 53.8674C27.4478 53.9551 27.225 54.0001 27 54.0001ZM16.875 29.4144V37.2466C16.875 44.7796 24.6487 49.2639 26.9977 50.4451C29.3422 49.2571 37.125 44.7504 37.125 37.2466V29.4144L27 25.9696L16.875 29.4144Z" fill="#A3A8AF"/>
+									<path d="M26.4374 43.8753C25.9919 43.8753 25.5599 43.6976 25.2449 43.3803L20.7449 38.8803C20.0857 38.2211 20.0857 37.1523 20.7449 36.4931C21.4042 35.8338 22.4729 35.8338 23.1322 36.4931L26.2574 39.6183L31.8374 32.1753C32.3909 31.4306 33.4507 31.2776 34.1999 31.8378C34.9447 32.3981 35.0954 33.4556 34.5352 34.2003L27.7852 43.2003C27.4927 43.5918 27.0449 43.837 26.5544 43.8708C26.5162 43.8753 26.4779 43.8753 26.4374 43.8753Z" fill="#A3A8AF"/>
+								</g>
+								<defs>
+									<clipPath id="clip0">
+										<rect width="54" height="54" fill="white"/>
+									</clipPath>
+								</defs>
+							</svg>
+							<p>Một đường dẫn xác minh đã được gửi đến địa chỉ email<br/><span class="email_sent"></span><br/> Vui lòng kiểm tra email để xác minh.</p>
+							<div class="form-group actions">
+								<button type="button" onclick="window.location.href='/account'" class="btn btn-style btn_50 btn_register">Tiếp tục</button>
+							</div>
+						</div>
+					</div>
+					<div id="captcha-container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	window.Bizweb.sms_settings = {
+		is_firebase: {{ sms_auth_setting.is_firebase }},
+		has_fallback: {{ sms_auth_setting.has_fallback }},
+		can_login_sms: {{ sms_auth_setting.login_sms }}
+	}
+</script>
+{% if sms_auth_setting.is_firebase %}
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+{% endif %}
+{{ 'customer-firebase-login.js' | asset_url | script_tag }}
