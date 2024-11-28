@@ -1,0 +1,93 @@
+{% include 'breadcrumb' %}
+<section class="section">
+	<div class="container margin-bottom-20">
+		<div class="wrap_background_aside margin-bottom-40 page_login">
+			<h1 class="title_page">Đăng ký tài khoản</h1>
+			<div class="row">
+				<div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+					<div class="page-login" id="RegisterForm">
+						{% form "customer_id_register" %}
+						<h2>Đăng ký tài khoản</h2>
+						<div class="form-signup">
+							<input type="hidden" value="validate_phone" id="StepRegister" />
+							{% comment %}
+							<span class="label" data-label="Otp" style="display: none; margin-bottom: 8px;">Mã xác minh đã được gửi đến số điện thoại của bạn: </span>
+							{% endcomment %}
+							<div class="form-group" id="PhoneFormGroup">
+								<p class="noti">
+									Nhập số điện thoại của bạn để đăng ký:
+								</p>
+								<label>Số điện thoại<span>*</span></label>
+								<input type="tel" pattern="^(0|84|\+84)\d{7,24}$" required onkeypress="return event.charCode === 8 || event.charCode === 0 || event.charCode === 43 || (event.charCode >= 48 && event.charCode <= 57)" class="form-control form-control-lg" value="" name="Phone" id="Phone" placeholder="Nhập số điện thoại" />
+								<span class="message-error" data-error-for="Phone"></span>
+							</div>
+							<div class="form-group" id="OtpFormGroup" style="display: none">
+								<label>Mã OTP<span>*</span></label>
+								<input type="text" class="form-control form-control-lg" value="" name="Otp" id="Otp" maxlength="6" placeholder="Nhập mã OTP" />
+								<span class="message-error" data-error-for="Otp"></span>
+							</div>
+							<div id="RegisterExtraInfo" style="display: none;">
+								<p class="noti">
+									Bổ sung thông tin cá nhân cho tài khoản:
+								</p>
+								<div class="form-group">
+									<label>Họ<span>*</span></label>
+									<input type="text" class="form-control form-control-lg" value="" name="LastName" id="LastName" placeholder="Nhập họ" />
+								</div>
+								<div class="form-group">
+									<label>Tên<span>*</span></label>
+									<input type="text" class="form-control form-control-lg" value="" name="FirstName" id="FirstName" placeholder="Nhập tên" />
+									<span class="message-error" data-error-for="FirstName"></span>
+								</div>
+								<div class="form-group">
+									<label>Email</label>
+									<input type="email" class="form-control form-control-lg" value="" name="Email" id="Email" placeholder="Nhập Email" />
+									<span class="message-error" data-error-for="Email"></span>
+								</div>
+								<div class="form-group">
+									<label>Mật khẩu<span>*</span></label>
+									<input type="password" class="form-control form-control-lg" value="" name="Password" id="Password" placeholder="Nhập mật khẩu" />
+									<span class="message-error" data-error-for="Password"></span>
+								</div>
+								<div class="form-group">
+									<label>Nhập lại mật khẩu<span>*</span></label>
+									<input type="password" class="form-control form-control-lg" value="" name="ConfirmPassword" id="ConfirmPassword" placeholder="Nhập lại mật khẩu" />
+									<span class="message-error" data-error-for="ConfirmPassword"></span>
+								</div>
+							</div>
+							<div id="captcha-container"></div>
+							<div class="form-error text-danger"></div>
+							<div class="form-group actions">
+								<button type="submit" id="main_btn" class="btn btn-style btn_50 btn_register" disabled>Tiếp tục</button>
+							</div>
+						</div>
+						{% endform %}
+						<div id="SocialRegister">
+							<div class="social-login--facebooks">
+								<span class="has-account">Bạn đã có tài khoản <a href="/account/login">Đăng nhập tại đây</a></span>
+								<p class="text-or">
+									<span>Hoặc đăng nhập bằng</span>
+								</p>
+								{{ social_login.script }}
+								{{ social_login.facebook_button }}
+								{{ social_login.google_button }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<script>
+	window.Bizweb.sms_settings = {
+		is_firebase: {{ sms_auth_setting.is_firebase }},
+		has_fallback: {{ sms_auth_setting.has_fallback }},
+		can_login_sms: {{ sms_auth_setting.login_sms }}
+	}
+</script>
+{% if sms_auth_setting.is_firebase %}
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-auth-compat.js"></script>
+{% endif %}
+{{ 'customer-firebase-register.js' | asset_url | script_tag }}
