@@ -1,0 +1,66 @@
+{% if settings.display_top_phone_number %}
+<div class="fix-phone p-1 p-lg-2 pt-lg-3 pb-lg-3" id="mb_bar">
+	<a href="tel:{{ settings.top_phone_number | default: store.phone_number | remove: ' '}}" onclick="dataLayer.push({'event': 'tel:1900636925'});" title="{{settings.txt_hotline}}" class="mt-lg-1 ml-1 mb-lg-1 mr-1 ml-lg-0 mr-lg-0 phone-box d-flex align-items-center justify-content-center">
+		<svg width="24" height="24" class="play0">
+			<use href="#svg-phone" />
+		</svg>
+	</a>
+	<a href="https://m.me/{{ settings.facebook_id }}" onclick="dataLayer.push({'event': 'fb_messenger'});" title="Chat Facebook" target="_blank" class="mt-lg-1 ml-1 mb-lg-1 mr-1 ml-lg-0 mr-lg-0 fb-box d-flex align-items-center justify-content-center rounded-circle">
+		<svg width="28" height="28">
+			<use href="#svg-messenger" />
+		</svg>
+	</a>
+	<a href="https://zalo.me/{{ settings.zalo_phone_number | remove: ' '}}" onclick="dataLayer.push({'event': 'click_zalo'});" title="Chat Zalo" target="_blank" class="mt-lg-1 ml-1 mb-lg-1 mr-1 ml-lg-0 mr-lg-0 zalo-box d-flex align-items-center justify-content-center">
+		<svg width="32" height="32">
+			<use href="#svg-zalo" />
+		</svg>
+	</a>
+	{%-if settings.enable_compare and settings.compare_url-%}
+	<a href="{{settings.compare_url | prepend: '/'}}" title="{{pages[settings.compare_url].title}}" class="d-none d-lg-flex mt-lg-1 ml-1 mb-lg-1 mr-1 ml-lg-0 mr-lg-0 js-compare-button js-notify-container zalo-box align-items-center justify-content-center">
+		<svg width="24" height="24">
+			<use href="#svg-compare" />
+		</svg>
+		<span class="position-absolute rounded-circle text-center font-weight-bold">0</span>
+	</a>
+	<a href="javascript:;" title="{{settings.compare_share_text}}" class="d-none d-lg-flex mt-lg-1 ml-1 mb-lg-1 mr-1 ml-lg-0 mr-lg-0 js-compare-share zalo-box align-items-center justify-content-center">
+		<svg width="19" height="19">
+			<use href="#svg-shareCompare" />
+		</svg>
+	</a>
+	{%endif%}
+</div>
+{% endif %}
+<div class="mew_mobi_bar d-lg-none position-fixed d-flex">
+	
+	<a id="js-menu-toggle" href="javascript:;" title="{{settings.breadcrumb_collection}}" class="item align-content-center d-flex flex-column h-100 justify-content-center">
+		<svg width="20" height="20">
+			<use href="#svg-menu" />
+		</svg>
+		<span class="tit d-block font-weight-bold text-center pr-1 pr-sm-2 pl-1 pl-sm-2 pt-1">{{settings.breadcrumb_collection}}</span>
+	</a>
+	<a href="{{settings.breadcrumb_sale_url}}" title="{{settings.breadcrumb_sale}}" class="item align-content-center d-flex flex-column h-100 justify-content-center">
+		<img src="{{'breadcrumb_sale.png' | asset_url }}" alt="{{settings.breadcrumb_sale}}" width="20" height="20"/>
+		<span class="tit d-block font-weight-bold text-center pr-1 pr-sm-2 pl-1 pl-sm-2 pt-1">{{settings.breadcrumb_sale}}</span>
+	</a>
+	<a href="javascript:;" title="{{settings.breadcrumb_contact}}" class="item align-content-center d-flex flex-column h-100 justify-content-center" id="js-contact-toggle">
+		<svg width="20" height="20">
+			<use href="#svg-phone" />
+		</svg>
+		<span class="tit d-block font-weight-bold text-center pr-1 pr-sm-2 pl-1 pl-sm-2 pt-1">{{settings.breadcrumb_contact}}</span>
+	</a>
+	<a href="{%- if customer -%}/account{%-else-%}/account/login{%-endif-%}" title="{{settings.breadcrumb_customer }}" class="item align-content-center d-flex flex-column h-100 justify-content-center {%if template contains 'customers'%}active{%endif%}">
+		<svg width="20" height="20">
+			<use href="#svg-user" />
+		</svg>
+		<span class="tit d-block font-weight-bold text-center pr-1 pr-sm-2 pl-1 pl-sm-2 pt-1">{{settings.breadcrumb_customer }}</span>
+	</a>
+	<a class="item d-flex flex-column p-1 align-items-center justify-content-center btn-cart position-relative {%if template contains 'cart'%} active{%endif%} " title="{{settings.breadcrumb_cart}}" href="/cart">
+		<span class="position-relative flex-column d-flex">
+			<svg width="20" height="20">
+				<use href="#svg-cart" />
+			</svg>
+			<span class="tit d-block font-weight-bold text-center pr-1 pr-sm-2 pl-1 pl-sm-2 pt-1">{{settings.breadcrumb_cart}}</span>
+			<span class="btn-cart-indicator position-absolute d-none text-center"></span>
+		</span>
+	</a>
+</div>
