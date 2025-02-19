@@ -21,6 +21,7 @@
 {% endif %}
 {% endfor%}
 
+
 <div itemscope itemtype="http://schema.org/Product">
 	{%-include 'schema_product'-%}
 	<div class="container mt-3 mb-3">
@@ -131,6 +132,39 @@
 							{%- endif -%}
 
 						</div>
+						<div class="voucher-small pt-2 pb-4">
+							<b>Ưu đãi:</b>
+								<div class="discount-container">
+								  <span class="discount-code" onclick="copyCode('ELM50KD99')">Giảm 50k</span>
+								  <div class="hover-box">
+									<div class="title">Nhập ELM50KD99 <span class="text-muted"></span></div>
+									<div>Giảm 50K cho đơn từ 799K</div>
+									<div class="note">Áp dụng đồng thời với các ưu đãi khác.</div>
+								  </div>
+								  <div class="copy-message" id="message-ELM50KD99">Đã sao chép!</div>
+								</div>
+								<div class="discount-container">
+								  <span class="discount-code" onclick="copyCode('ELM00JH22')">Giảm 100k</span>
+								  <div class="hover-box">
+									<div class="title">Nhập ELM00JH22 <span class="text-muted"></span></div>
+									<div>[HOT] Giảm 100K cho đơn từ 999K </div>
+									<div class="note">Áp dụng đồng thời với các ưu đãi khác.</div>
+								  </div>
+								  <div class="copy-message" id="message-ELM00JH22">Đã sao chép!</div>
+								</div>
+								<div class="discount-container">
+								  <span class="discount-code" onclick="copyCode('ELM20DB70')">Giảm 200k</span>
+								  <div class="hover-box">
+									<div class="title">Nhập ELM20DB70 <span class="text-muted"></span></div>
+									<div>Giảm 200K cho đơn từ 1999K</div>
+									<div class="note">Áp dụng đồng thời với các ưu đãi khác.</div>
+								  </div>
+								  <div class="copy-message" id="message-ELM20DB70">Đã sao chép!</div>
+								</div>
+						</div>
+						 <div class="voucher-container" id="voucher-container">
+						  <!-- Voucher sẽ hiển thị tại đây -->
+						</div>
 						<div class="sku variant-sku">
 							<b>Mã sản phẩm:</b>
 							{%if product.selected_or_first_available_variant.sku != null and product.selected_or_first_available_variant.sku !=""%}
@@ -139,10 +173,6 @@
 							Đang cập nhật
 							{%endif%}
 						</div>
-							<span class=".sku-product">
-								<span class="sku .variant-sku">{{ product.variants[0].sku }}</span>
-								<meta itemprop="sku" content="{{ product.variants[0].sku }}">
-							</span>
 						{% include 'm_list_tag_pr' %}
 						<form action="/cart/add" method="post" enctype="multipart/form-data">
 							<input type="hidden" name="productAlias" value="{{ product.alias}}" />
@@ -207,6 +237,8 @@
 								</a>
 								{%endif%}
 								{% include 'buyxgety-module-detail' %}
+								{% include 'combo-module-detail' %}
+
 							</div>
 							{%- if productContent != '' or product.summary != '' -%}
 							<div class="product-summary small mb-3 mt-3">
@@ -235,41 +267,8 @@
 						{%include 'm_gift'%}
 						{%-endif-%}
 						{%include 'poli_product'%}
-						<div class="linehot_pro alert alert-warning mb-3 d-flex align-items-center rounded-10">
-							<img class="mr-3 lazy" alt="{{settings.hotline_buy}}" src="{{'placeholder_1x1.png' | asset_url}}" data-src="{{'customer-service.png' | asset_url}}">
-							<div class="b_cont font-weight-bold">
-								<span class="d-block">
-									{% capture hotlineHtml %}<a href="tel:{{settings.hotline_buy | remove: ' ' | remove: '.'}}" title="{{settings.hotline_buy}}">{{settings.hotline_buy}}</a>{% endcapture %}
-									{{settings.hotline_text | replace: '[hotline]', hotlineHtml}}
-								</span> 
-							</div>
-						</div>
-						<div class="product-info position-relative mb-3 p-2 border rounded-10">
-							<span class="in_1">
-								{{settings.other_status}}:
-								{%- if product.available -%}
-								{%- if product.selected_or_first_available_variant.inventory_management == "" -%}
-								<span class="inventory_quantity">{{settings.available}}</span>
-								{%- else -%}
-								{%- if product.selected_or_first_available_variant.inventory_quantity > 0 -%}
-								<span class="inventory_quantity">{{settings.available}}</span>
-								{%- else -%}
-								<span class="inventory_quantity">{{settings.available}}</span>
-								{%- endif -%}
-								{%- endif -%}
-								{%- else -%}
-								<span class="inventory_quantity">{{settings.soldOut}}</span>
-								{%- endif -%}
-							</span>
-							{%-if product.vendor != null and product.vendor != ''-%}
-							<div class="in_1">
-								{{settings.filter_vendor_title}}: <span id="vendor">{{product.vendor | default: settings.other_updating}}</span>
-							</div>
-							{%-endif-%}
-							{%-if product.type != null and product.type != ''-%}
-							<div class="in_1">{{settings.filter_type_title}}: <span id="type">{{product.type | default: settings.other_updating}}</span></div>
-							{%-endif-%}
-						</div>
+
+
 
 					</div>
 				</div>
@@ -534,3 +533,110 @@
 	});
 
 </script>
+
+<script>
+window.insider_object = window.insider_object || {};
+window.insider_object.product = {
+    "id": "{{ product.variants[0].sku }}",
+	"name" : "{{ product.name }}",
+    "taxonomy" : "{{ product.type }}",
+	"brand" : "{{ product.vendor }}",
+	"unit_price": "{{ product.variants[0].compare_at_price }}",
+    "unit_sale_price": "{{ product.variants[0].price }}",
+	"url": "{{ product.variants[0].url}}",
+	"product_image_url": "{{ product.variants[0].image.src }}",
+	"custom": {
+        "groupcode": "{{ product.id }}"	
+	},
+}
+</script>
+
+
+<script>
+    function copyCode(code) {
+      // Sao chép mã vào clipboard
+      navigator.clipboard.writeText(code).then(() => {
+        // Hiển thị thông báo "Đã sao chép!"
+        const message = document.getElementById(`message-${code}`);
+        message.classList.add('show-message');
+        setTimeout(() => {
+          message.classList.remove('show-message');
+        }, 2000); // Ẩn sau 2 giây
+      });
+    }
+  </script>
+
+<style>
+    .discount-container {
+      position: relative;
+      display: inline-block;
+    }
+    .discount-code {
+     display: inline-block;
+    padding: 5px 5px;
+    width: 100px;
+    color: #ff0000;
+    font-weight: bold;
+    text-align: center;
+    background-image: url(https://elmich.vn/wp-content/uploads/2024/12/voucher.png);
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    }
+    .hover-box {
+      position: absolute;
+      top: 120%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      font-size: 0.9rem;
+      display: none;
+      z-index: 10;
+    }
+    .hover-box::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 16px;
+      background: white;
+      border-top: 1px solid #ddd;
+      border-left: 1px solid #ddd;
+      transform: rotate(45deg);
+    }
+    .discount-container:hover .hover-box {
+      display: block;
+    }
+    .hover-box .title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .hover-box .note {
+      color: #888;
+      font-size: 0.85rem;
+    }
+    .copy-message {
+	    width: 110px;
+      display: none;
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #dc3545;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      z-index: 20;
+    }
+    .show-message {
+      display: block;
+    }
+  </style>
