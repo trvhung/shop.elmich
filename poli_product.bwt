@@ -1,0 +1,28 @@
+<div class="product_poli_wrap mb-3 border rounded">
+	<h5 class="m-0 p-2 font-weight-bold">
+		{{settings.poli_tit}}
+	</h5>
+	<div class="product_poli list-unstyled flex-column d-flex align-items-start m-0">
+		<div class="row m-0">
+			{%-for i in (1..5)-%}
+			{%-capture ena_poli-%}ena_poli_{{i}}a{%-endcapture-%}
+			{%-capture img_poli-%}img_poli_{{i}}a.png{%-endcapture-%}
+			{%-capture alt_poli-%}alt_poli_{{i}}a{%-endcapture-%}
+			{%-capture url_poli-%}url_poli_{{i}}a{%-endcapture-%}
+			{%-if settings[ena_poli]-%}
+			<div class="item d-flex align-items-center pb-2 pt-2 border-top w-100 col-12 col-sm-6 col-xl-12">
+				<div class="mr-2">
+					<img src="{{img_poli | asset_url}}" alt="{{settings[alt_poli]}}" decoding="async">
+				</div>
+				<div class="media-body"> 
+					{{settings[alt_poli]}}
+					{%if settings[url_poli] != null and settings[url_poli] != '' %}
+					<a href="{{settings[url_poli]}}" title="Xem chi tiết">(Xem chi tiết)</a>
+					{%endif%}
+				</div>
+			</div>
+			{%-endif-%}
+			{%-endfor-%}
+		</div>
+	</div>
+</div>
